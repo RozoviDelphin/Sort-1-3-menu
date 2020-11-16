@@ -1,0 +1,147 @@
+#include <stdlib.h>
+#include <stdio.h>
+#define n 10
+
+int menu(int action);
+int swap(int *a,int *b);
+int Mass(int *,int);
+int Sort1(int*,int);//Сортировка выбором
+int Sort2(int*,int);//Сортировка пузырьком
+int Sort3(int*,int,int);//Быстрая сортировка
+
+int main() 
+{
+    int action;
+    printf("1-сортировка выбором.\n2-сортировка пузырьком.\n3-быстрая сортировка.\n4-выход\nВыберите действие:");
+    scanf("%d",&action);
+    menu(action);
+}
+
+int swap(int *a,int*b)
+{
+  int tmp;
+  tmp=*a;
+  *a=*b;
+  *b=tmp;
+}
+int Mass(int *a,int size)
+{
+  for (int i=0;i<size;i++)
+  {
+    printf("%d ",a[i]);
+  }
+}
+int menu (int action)
+{
+    int size;
+    
+    printf("Задайте размер массива:");
+    scanf("%d",&size);
+    int i;
+    int right=size-1;
+    int* a= (int*) malloc (size*sizeof(int));
+    for (i=0;i<size;i++)
+    {
+     a[i]=rand()%size;
+     printf("%d ",a[i]);
+    }
+    printf ("\n");
+    switch(action)
+    {
+      case(1):printf("Сортировка выбором\n");Sort1(a,size);break;
+      case(2):printf("Сортировка пузырьком\n");Sort2(a,size);break;
+      case(3):printf("Быстрая сортировка\n");Sort3(a,0,right);Mass(a,size);break;
+      case(4):printf("Выход!\n");break;
+      default : printf("ERROR!\n");break;
+    }
+}
+
+
+
+int Sort1(int *a,int size)
+{
+  int min, tmp; 
+  for (int i = 0; i < size - 1; i++) 
+  {
+    min = i;
+    for (int j = i + 1; j < size; j++)
+    {
+      if (a[j] < a[min]) 
+        min = j;    
+    }  
+    
+    tmp = a[i];
+    a[i] = a[min];
+    a[min] = tmp;
+
+  }
+  for (int i=0;i<size;i++)
+  {
+    printf("%d ",a[i]);
+  }
+  
+}
+
+int Sort2(int *a,int size)
+{
+  int tmp;
+  int sizeX=size-1;
+  for(int i = 0; i < size; i++)
+  {
+    for(int j = 0; j < sizeX-i; j++)
+    {
+      if (a[j] > a[j+1])
+      {
+       tmp=a[j];
+       a[j]=a[j+1];
+       a[j+1]=tmp;    
+      }  
+         
+    }
+    
+  }
+  for (int i=0;i<size;i++)
+  {
+    printf("%d ",a[i]);
+  }
+}
+
+int Sort3(int* a,int left,int right)
+{
+  int tmp;
+  int x = a[(left + right) / 2];
+  int i = left, j = right;
+  for (;i<=j;)
+  {
+    while (a[i] < x)
+    {
+      i++;
+    }
+    while (x < a[j])
+    {
+      j--;
+    }
+    if (i <= j)
+    {
+      tmp = a[i];
+      a[i] = a[j];
+      a[j] = tmp;
+
+      i++;
+      j--;
+    }
+  }
+  
+  if (left < i)
+  {
+    Sort3(a, left, j);
+  }
+
+  if (right > j)
+  {
+    Sort3(a, i, right);
+  }
+  
+  
+
+}
